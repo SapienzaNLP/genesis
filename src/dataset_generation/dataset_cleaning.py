@@ -25,14 +25,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def postprocess_generation(generated: List[str]) -> Set[str]:
-    words = set()
-    for line in generated:
-        substitutes = line.strip().split(', ')
-        words.update([x.replace(',', '') for x in substitutes])
-    return words
-
-
 def main(args: argparse.Namespace) -> None:
 
     embedder = AutoModel.from_pretrained(args.model_name)

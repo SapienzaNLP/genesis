@@ -284,20 +284,15 @@ def eval_generation(dataset_name: str, input_path: str, output_folder: str,
                                 threshold, top_k, batch_size, output_vocabulary)
 
     if cut_vocab:
-        if isinstance(output_vocabulary, Set):
-            oot_output_path = os.path.join(output_folder, f'{dataset_name}_cut_{suffix}_oot.txt')
-            best_output_path = os.path.join(output_folder, f'{dataset_name}_cut_{suffix}_best.txt')
-            output_path = os.path.join(output_folder, f'{dataset_name}_cut_hr_{suffix}_output.txt')
 
-        else:
-            oot_output_path = os.path.join(output_folder, f'{dataset_name}_cut_per_target_{suffix}_oot.txt')
-            best_output_path = os.path.join(output_folder, f'{dataset_name}_cut_per_target_{suffix}_best.txt')
-            output_path = os.path.join(output_folder, f'{dataset_name}_cut_per_target_hr_{suffix}_output.txt')
+        oot_output_path = os.path.join(output_folder, f'{dataset_name}_cut_per_target_{suffix}_oot.txt')
+        best_output_path = os.path.join(output_folder, f'{dataset_name}_cut_per_target_{suffix}_best.txt')
+        output_path = os.path.join(output_folder, f'{dataset_name}_cut_per_target_hr_{suffix}_output.txt')
 
     else:
-        oot_output_path = os.path.join(output_folder, f'{dataset_name}_oot.txt')
-        best_output_path = os.path.join(output_folder, f'{dataset_name}_best.txt')
-        output_path = os.path.join(output_folder, f'{dataset_name}_hr_output.txt')
+        oot_output_path = os.path.join(output_folder, f'{suffix}_{dataset_name}_oot.txt')
+        best_output_path = os.path.join(output_folder, f'{suffix}_{dataset_name}_best.txt')
+        output_path = os.path.join(output_folder, f'{suffix}_{dataset_name}_hr_output.txt')
 
     print(f'Saving readable output in {output_path}')
 
@@ -462,8 +457,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--beams', type=int, default=15)
     parser.add_argument('--sequences', type=int, default=3)
 
-
-    parser.add_argument('--threshold', type=float, default=0)
     parser.add_argument('--embedder', default="bert-large-cased")
     parser.add_argument('--cuda_device', type=int, default=0)
     parser.add_argument('--baseline', default=False, action="store_true")
@@ -531,7 +524,6 @@ def main(args: argparse.Namespace):
                                           root_vocab_path=args.cvp,
                                           gold_dict_per_instance=gold_per_instance,
                                           model_name=args.embedder, device=map_location,
-                                          threshold=args.threshold,
                                           suffix=args.suffix,
                                           baseline=args.baseline,
                                           backoff=args.backoff,

@@ -20,12 +20,9 @@ def parse_args():
     parser.add_argument('--suffix', required=True)
     parser.add_argument('--cvp', required=True)
 
-    parser.add_argument('--task', required=False, default='generation')
-
     parser.add_argument('--beams', type=int, default=15)
     parser.add_argument('--sequences', type=int, default=3)
 
-    parser.add_argument('--threshold', type=float, default=0)
     parser.add_argument('--embedder', default="bert-large-cased")
     parser.add_argument('--cut_vocab', action="store_true", default=False)
     parser.add_argument('--baseline', default=False, action="store_true")
@@ -91,7 +88,7 @@ if __name__ == '__main__':
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    output_path = os.path.join(output_folder, f'output_{dataset_name}.txt')
+    output_path = os.path.join(output_folder, f'output_{args.suffix}_{dataset_name}.txt')
 
     print(f'Saving output in {output_path}')
 

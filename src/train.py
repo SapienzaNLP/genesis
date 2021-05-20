@@ -102,7 +102,7 @@ def main(args: argparse.Namespace):
 
         logger.log_hyperparams(configuration)
 
-    checkpoint_conf = configuration['trainer']['checkpoints']
+    checkpoint_conf = configuration['trainer']['checkpoint']
 
     checkpointer = ModelCheckpoint(
         dirpath=f'{output_folder}/checkpoints',

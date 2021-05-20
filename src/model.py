@@ -225,21 +225,11 @@ class BartModel(pl.LightningModule):
 
     def generate(self, batch: Dict[str, torch.Tensor]) -> Tuple[List[str], List[str], torch.Tensor]:
 
-        if self.config["exclude_ids"]:
-
-            generation = self.model.generate(
-                input_ids=batch["source"],
-                attention_mask=batch["source_padding_mask"],
-                bad_words_ids=self.bad_ids,
-                **self.generation_parameters,
-            )
-
-        else:
-            generation = self.model.generate(
-                input_ids=batch["source"],
-                attention_mask=batch["source_padding_mask"],
-                **self.generation_parameters,
-            )
+        generation = self.model.generate(
+            input_ids=batch["source"],
+            attention_mask=batch["source_padding_mask"],
+            **self.generation_parameters,
+        )
 
         generation = generation[:, 1:]
 
