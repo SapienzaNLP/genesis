@@ -2,7 +2,7 @@
 
 This repository contains the instructions to reproduce the experiments in the GeneSis paper.
 
-## 1. Setup a new environment
+## 1. :gear: Setup a new environment 
 
 a) Create and activate a new conda environment with 
 
@@ -15,7 +15,7 @@ c) Install the requirements with
 
 ```pip install -r requirements.txt```
 
-## 2. Download additional data and checkpoints
+## 2. :shopping_cart: Download additional data and checkpoints
 
 If you want to experiment with the datasets generated from SemCor, download the generated_datasets.tar.gz from https://tinyurl.com/ym7mebv9 and put the files under the ```data/``` directory. 
 Note that the name of each file has the following format: ```semcor_{similarity_threshold}_{split_size}_train.tsv```. The dataset without ```{split_size}``` is the whole dataset.
@@ -30,7 +30,7 @@ The structure of each output subfolder is the following:
 
 ```
 
-## 3. Train 
+## 3. :train: Train 
 
 Setup the config file ```config/train.yml``` following to the comments. \
 Train the model with ```PYTHONPATH=$(pwd) python src/train.py --config_path config/train.yml```. \
@@ -46,7 +46,7 @@ You can optionally pass the following parameters:
 The checkpoints for each run will be saved in the folder 
 ```output/ bart_{seed}_pt_{training_dataset}_drop_{dropout}_enc_lyd_{encoder_layerdropout}_dec_lyd_{decoder_layerdropout}/beams_{beam_size}_return_{return_sequences}/checkpoints/```
 
-## 4. Test
+## 4. :test_tube: Test
 
 To test a trained model on the lexical substitution task, run
 ```PYTHONPATH=$(pwd) python src/test.py --config_path config/train.yml --ckpt path_to_checkpoint --cvp vocab/wordnet_vocab --cut_vocab ```
@@ -66,7 +66,7 @@ There are several parameters that can be defined:
 --cuda_device # GPU id. If it's not given, the model will be tested on CPU
 ```
 
-## 5. Output Files
+## 5. :clipboard: Output Files
 
 The test script will produce several output files in the ```output/ bart_{seed}_pt_{training_dataset}_drop_{dropout}_enc_lyd_{encoder_layerdropout}_dec_lyd_{decoder_layerdropout}/beams_{beam_size}_return_{return_sequences}/output_files/``` folder. 
 The most important one is named ```output_{suffix}_{test_dataset_name}.txt``` and contains the raw (without cut on the datest, without backoff strategy), formatted, for each instance, as follows:
@@ -93,6 +93,13 @@ clean_output                                 # ex: #clean: remainder: 0.88, bala
 ```
 The ```clean_output``` row contains the output of the model after the vocab cut (if ```--cut_vocab``` is specified) and with fallback strategy (if ```--backoff```). The floats are the cosine similarities between target and substitute.
 
-## 6. Task Evaluation
+## 6. :microscope: Task Evaluation
 
 It is possible to try different configurations of a model already tested by running ```PYTHONPATH=$(pwd) python src/task_evaluation.py --config_path config/train.yml```. The parameters are the same of ```test.py```, plus ```--finetune``` that has to be set if you trained your model with pre-training + finetuning. Note that the only parameters that can be changed without re-testing the model are ```--cvp```, ```--cut_vocab``` and ```--backoff```.
+
+# :spiral_notepad: Dataset Generation
+In order to generate new silver data, is it possible to use the scripts in the ```src/dataset_generation``` folder.
+a) ```annotate_semcor.py``` builds an input file properly formatted for the model, starting from a pair of files in the [http://lcl.uniroma1.it/wsdeval/](Raganato framework's format)
+b) The generated file is the input required by ```generate_dataset.py```, to be provided through the ```--sentences_path``` parameter. In this case, the config file to give as parameter is ```config/dataset_generation.yml```. All the other parameters have been discussed in the sections above.
+c) ```dataset_cleaning.py``` cleans out the generated dataset. The ```--threshold``` parameter is the threshold on cosine similarity between target and substitutes.
+d) Finally, ```semcor_splits.py``` produces a split of the clean dataset. The parameters are commented in the code.
