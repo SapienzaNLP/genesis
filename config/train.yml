@@ -1,0 +1,72 @@
+paths:
+  output_folder:
+    checkpoints
+
+  data_dir:
+    data/
+
+  scorer_dir:
+    scoring_scripts/
+
+exp_name:
+  bart
+
+
+datasets:
+  pretrain: semcor_0.7
+  #finetune:
+  dev: coinco_twsi
+  test: lst
+
+model:
+  name: facebook/bart-large
+  max_tokens_per_batch: 600
+  dropout: 0.1
+  decoder_layerdropout: 0.2
+  encoder_layerdropout: 0.6
+  seed: 313
+
+optimiser:
+  learning_rate: 0.00001
+  weight_decay: 0.01
+  no_decay_params:
+    - "bias"
+    - "LayerNorm.weight"
+
+generation_parameters:
+  num_beams: 15
+  num_return_sequences: 3
+  early_stopping: True
+
+wandb:
+  project_name: generative-substitution
+
+trainer:
+
+  checkpoint:
+    filename: '{epoch}-{val_prec:.2f}-{val_accuracy:.3f}'
+    save_top_k: 1
+    save_last: False
+    monitor: val_accuracy
+    mode: max
+
+  patience: 2
+  max_epochs: 100
+  use_amp: True
+
+  gradient:
+    accumulation: 2
+    clipping: 5.0
+
+shorten_gen_keys:
+    num_beams: beams
+    num_return_sequences: return
+    early_stopping: None
+    length_penalty: len_penalty
+    min_length: min_len
+    do_sample: sample
+    top_k: top_k
+    temperature: temp
+    no_repeat_ngram_size: no_rep
+
+

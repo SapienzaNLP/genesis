@@ -1,0 +1,46 @@
+paths:
+  output_folder:
+    data/generated_corpus
+
+  data_dir:
+    data/
+
+datasets:
+  output_name: generated_semcor_25_25
+
+model:
+  name: facebook/bart-large
+  max_tokens_per_batch: 250
+  #dropout: 0.5
+
+optimiser:
+  learning_rate: 0.00001
+  weight_decay: 0.01
+  no_decay_params:
+    - "bias"
+    - "LayerNorm.weight"
+
+generation_parameters:
+  num_beams: 10
+  num_return_sequences: 3
+  early_stopping: True
+
+wandb:
+  project_name: generative-substitution
+
+trainer:
+
+  checkpoint:
+    filename: '{epoch}-{val_prec:.2f}-{val_accuracy:.3f}'
+    save_top_k: 2
+    save_last: True
+    monitor: val_accuracy
+    mode: max
+
+  patience: 5
+  max_epochs: 100
+  use_amp: False
+
+  gradient:
+    accumulation: 2
+    clipping: 5.0
