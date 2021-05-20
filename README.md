@@ -17,9 +17,9 @@ c) Install the requirements with
 
 ## 2. :shopping_cart: Download additional data and checkpoints
 
-If you want to experiment with the datasets generated from SemCor, download the generated_datasets.tar.gz from https://tinyurl.com/ym7mebv9 and put the files under the ```data/``` directory. 
+If you want to experiment with the datasets generated from SemCor, download the [generated_datasets.tar.gz](https://tinyurl.com/ym7mebv9) and put the files under the ```data/``` directory. 
 Note that the name of each file has the following format: ```semcor_{similarity_threshold}_{split_size}_train.tsv```. The dataset without ```{split_size}``` is the whole dataset.
-If you want to test one of the models described in the paper, download the checkpoints from https://tinyurl.com/jnc6rk44 and move the external folder under the ```output/``` directory.
+If you want to test one of the models described in the paper, download the [checkpoints](https://tinyurl.com/jnc6rk44) and move the external folder under the ```output/``` directory.
 The structure of each output subfolder is the following:
 ``` 
 |--- bart_{seed}_pt_{training_dataset}_drop_{dropout}_enc_lyd_{encoder_layerdropout}_dec_lyd_{decoder_layerdropout} \
@@ -99,7 +99,11 @@ It is possible to try different configurations of a model already tested by runn
 
 # :spiral_notepad: Dataset Generation
 In order to generate new silver data, is it possible to use the scripts in the ```src/dataset_generation``` folder.
-a) ```annotate_semcor.py``` builds an input file properly formatted for the model, starting from a pair of files in the [http://lcl.uniroma1.it/wsdeval/](Raganato framework's format)
+
+a) ```annotate_semcor.py``` builds an input file properly formatted for the model, starting from a pair of files in the [http://lcl.uniroma1.it/wsdeval/](Raganato framework)'s format
+
 b) The generated file is the input required by ```generate_dataset.py```, to be provided through the ```--sentences_path``` parameter. In this case, the config file to give as parameter is ```config/dataset_generation.yml```. All the other parameters have been discussed in the sections above.
+
 c) ```dataset_cleaning.py``` cleans out the generated dataset. The ```--threshold``` parameter is the threshold on cosine similarity between target and substitutes.
+
 d) Finally, ```semcor_splits.py``` produces a split of the clean dataset. The parameters are commented in the code.
