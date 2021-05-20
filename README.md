@@ -100,7 +100,7 @@ It is possible to try different configurations of a model already tested by runn
 # :spiral_notepad: Dataset Generation
 In order to generate new silver data, is it possible to use the scripts in the ```src/dataset_generation``` folder.
 
-a) ```annotate_semcor.py``` builds an input file properly formatted for the model, starting from a pair of files in the [http://lcl.uniroma1.it/wsdeval/](Raganato framework)'s format
+a) ```annotate_semcor.py``` builds an input file properly formatted for the model, starting from a pair of files in the Raganato [framework](http://lcl.uniroma1.it/wsdeval/)'s format
 
 b) The generated file is the input required by ```generate_dataset.py```, to be provided through the ```--sentences_path``` parameter. In this case, the config file to give as parameter is ```config/dataset_generation.yml```. All the other parameters have been discussed in the sections above.
 
