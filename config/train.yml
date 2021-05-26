@@ -1,6 +1,7 @@
 paths:
   output_folder:
-    output # path to the output folder where the checkpoints will be saved during training. If the path does not exists, the folder will be created.
+    checkpoints # path to the output folder where the checkpoints will be saved during training.
+                # If the path does not exists, the folder will be created.
 
   data_dir:
     data/ # path to the data directory.

@@ -122,6 +122,8 @@ def get_clean_substitutes_from_batch(batch: List[str], target: str,
                             continue
                     else:
                         substitutes = get_related_lemmas(target)
+                        substitutes = set([x for x in substitutes
+                                           if x.lower().replace('_', ' ') != lemma_target.lower().replace('_', ' ')])
 
                         output_vocabulary[target] = substitutes
                         with open(os.path.join(root_vocab_path, target), 'w') as out:
@@ -305,10 +307,16 @@ def eval_generation(dataset_name: str, input_path: str, output_folder: str,
 
 
         backoff_list = []
+
         for s_idx in range(len(all_gen_subst)):
             target = convert_to_universal_target(instances_infos[s_idx][0])
+            *target_lemma, target_pos = target.split('.')
+            target_lemma = '.'.join(target_lemma)
+
+            clean_substitutes = [x for x in output_vocabulary[target]
+                                 if x.lower().replace('_', ' ') != target_lemma.lower().replace('_', ' ')]
             if backoff:
-                backoff_list.append(list(output_vocabulary[target]))
+                backoff_list.append(clean_substitutes)
 
         similarities, _ = sort_substitutes_cos_sim_batched(all_gen_subst, input_infos,
                                                                           embedder, tokenizer, hidden_size,
