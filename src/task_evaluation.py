@@ -97,9 +97,7 @@ def sort_substitutes_cos_sim_batched(substitutes: List[List[str]],
 
 
 def get_clean_substitutes_from_batch(batch: List[str], target: str,
-                                     whole_vocab: Optional[Set[str]] = None,
-                                     output_vocabulary: Optional[Union[Set[str],
-                                                                       Dict[str, Set[str]]]] = None,
+                                     output_vocabulary: Optional[Dict[str, Set[str]]] = None,
                                      root_vocab_path: Optional[str] = None) -> Tuple[
     List[str], List[str]]:
 
@@ -115,36 +113,23 @@ def get_clean_substitutes_from_batch(batch: List[str], target: str,
         for word in sub_line:
             if word not in all_substitutes:
                 if check_word(word, lemma_target):
-                    if whole_vocab:
-                        if word in whole_vocab:
-                            all_substitutes.append(word)
-                    else:
-                        all_substitutes.append(word)
+                    all_substitutes.append(word)
 
             if word not in clean_substitutes:
                 if output_vocabulary:
-                    if isinstance(output_vocabulary, Set):
-                        if word not in output_vocabulary:
+                    if target in output_vocabulary:
+                        if word.lower() not in output_vocabulary[target]:
                             continue
                     else:
-                        assert isinstance(output_vocabulary, Dict)
-                        if target in output_vocabulary:
-                            if word.lower() not in output_vocabulary[target]:
-                                continue
-                        else:
-                            substitutes = get_related_lemmas(target)
+                        substitutes = get_related_lemmas(target)
 
-                            output_vocabulary[target] = substitutes
-                            with open(os.path.join(root_vocab_path, target), 'w') as out:
-                                for substitute in substitutes:
-                                    out.write(substitute + '\n')
+                        output_vocabulary[target] = substitutes
+                        with open(os.path.join(root_vocab_path, target), 'w') as out:
+                            for substitute in substitutes:
+                                out.write(substitute + '\n')
 
                 if check_word(word, lemma_target):
-                    if whole_vocab:
-                        if word in whole_vocab:
-                            clean_substitutes.append(word)
-                    else:
-                        clean_substitutes.append(word)
+                    clean_substitutes.append(word)
 
     return clean_substitutes, all_substitutes
 
