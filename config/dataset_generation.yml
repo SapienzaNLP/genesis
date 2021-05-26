@@ -1,17 +1,17 @@
 paths:
   output_folder:
-    data/generated_corpus
+    data/generated_corpus # path to the output folder where the generated dataset will be saved
 
   data_dir:
-    data/
+    data/ # path to the data directory
 
 datasets:
-  output_name: generated_semcor_25_25
+  output_name: generated_semcor_25_25 # output name for the generated dataset
 
 model:
-  name: facebook/bart-large
+  name: facebook/bart-large # model name
   max_tokens_per_batch: 250
-  #dropout: 0.5
+
 
 optimiser:
   learning_rate: 0.00001
@@ -21,26 +21,9 @@ optimiser:
     - "LayerNorm.weight"
 
 generation_parameters:
-  num_beams: 10
-  num_return_sequences: 3
-  early_stopping: True
+  num_beams: 10 # beam size
+  num_return_sequences: 3 # top k beams to consider
+  early_stopping: True # early stopping for generation
 
 wandb:
   project_name: generative-substitution
-
-trainer:
-
-  checkpoint:
-    filename: '{epoch}-{val_prec:.2f}-{val_accuracy:.3f}'
-    save_top_k: 2
-    save_last: True
-    monitor: val_accuracy
-    mode: max
-
-  patience: 5
-  max_epochs: 100
-  use_amp: False
-
-  gradient:
-    accumulation: 2
-    clipping: 5.0

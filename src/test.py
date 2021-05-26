@@ -13,22 +13,42 @@ from src.utils import define_generation_out_folder, get_output_dictionary
 
 
 def parse_args():
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config_path', required=True)
+
+    parser.add_argument('--config_path', required=True, help='path to the yaml config file')
+
     parser.add_argument('--cuda_device', type=int, default=None)
-    parser.add_argument('--ckpt', required=True)
-    parser.add_argument('--suffix', required=True)
-    parser.add_argument('--cvp', required=True)
 
-    parser.add_argument('--beams', type=int, default=15)
-    parser.add_argument('--sequences', type=int, default=3)
+    parser.add_argument('--suffix', required=True, help='name to be used as suffix for saving output files')
 
-    parser.add_argument('--embedder', default="bert-large-cased")
-    parser.add_argument('--cut_vocab', action="store_true", default=False)
-    parser.add_argument('--baseline', default=False, action="store_true")
-    parser.add_argument('--backoff', default=False, action="store_true")
+    parser.add_argument('--cvp', required=True,
+                        help='path to the output vocabulary. If "", the vocabulary won\'t be cut')
 
-    parser.add_argument('--test', default=False, action="store_true")
+    parser.add_argument('--ckpt', required=True, help='path to the checkpoint to test.')
+
+    parser.add_argument('--beams', type=int, default=15, help='beam size for beam search during evaluation.')
+    parser.add_argument('--sequences', type=int, default=3,
+                        help='number of top k sequences generated with beam search to consider during evaluation.')
+
+    parser.add_argument('--threshold', type=float, default=0,
+                        help='threshold for cosine similarity between candidate substitute and target word')
+
+    parser.add_argument('--embedder', default="bert-large-cased",
+                        help='embedder used to compute contextualised representations.')
+
+    parser.add_argument('--cut_vocab', default=False, action="store_true",
+                        help='flag. If set, will cut over the output vocabulary specified with --cvp')
+
+    parser.add_argument('--baseline', default=False, action="store_true",
+                        help='flag. If set, will compute the vocabulary baseline')
+
+    parser.add_argument('--backoff', default=False, action="store_true",
+                        help='flag. If set, will use the fallback strategy')
+
+    parser.add_argument('--test', default=False, action="store_true",
+                        help='flag. If set, will evaluate on the test dataset instead of the dev one.')
+
     return parser.parse_args()
 
 
@@ -37,11 +57,6 @@ if __name__ == '__main__':
     args = parse_args()
     configuration = yaml.load(open(args.config_path), Loader=yaml.FullLoader)
 
-    is_multilingual = False
-    if 'multilingual' in args.config_path:
-        is_multilingual = True
-        print(f'Using mBART on {configuration["language"]}')
-
     bart_name = configuration['model']['name']
     max_tokens_per_batch = configuration['model']['max_tokens_per_batch']
 
@@ -49,6 +64,7 @@ if __name__ == '__main__':
 
     if args.test:
         dataset_name = configuration['datasets']['test']
+
     else:
         print(f'Testing on dev')
         dataset_name = configuration['datasets']['dev']
@@ -111,6 +127,7 @@ if __name__ == '__main__':
     if args.cut_vocab:
         output_vocab_path = args.cvp
         output_vocabulary = get_output_dictionary(output_vocab_path)
+
     else:
         output_vocabulary = set()
 

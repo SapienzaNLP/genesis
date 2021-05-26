@@ -39,11 +39,7 @@ def main(args: argparse.Namespace):
     if args.encoder_layerdropout != 0:
         configuration['model']['encoder_layerdropout'] = args.encoder_layerdropout
 
-    finetune = False
-    if args.ckpt != '':
-        finetune = True
-
-    exp_name = define_exp_name(configuration, finetune)
+    exp_name = define_exp_name(configuration)
     out_name = define_generation_out_folder(configuration)
 
     output_folder = os.path.join(configuration['paths']['output_folder'], exp_name, out_name)
@@ -63,13 +59,7 @@ def main(args: argparse.Namespace):
     gold_path = os.path.join(configuration['paths']['scorer_dir'], f"{configuration['datasets']['test']}_gold.txt")
     max_tokens_per_batch = configuration['model']['max_tokens_per_batch']
 
-    if finetune:
-        finetune_dataset_name = configuration['datasets']['finetune']
-        train_dataset = BartDataset(os.path.join(data_dir, f'{finetune_dataset_name}_train.tsv'), bart_name,
-                                    max_tokens_per_batch, gold_path=gold_path,
-                                    input_dataset_path=input_dataset_path)
-    else:
-        train_dataset = BartDataset(os.path.join(data_dir, f'{pre_train_dataset_name}_train.tsv'), bart_name,
+    train_dataset = BartDataset(os.path.join(data_dir, f'{pre_train_dataset_name}_train.tsv'), bart_name,
                                     max_tokens_per_batch, gold_path=gold_path,
                                     input_dataset_path=input_dataset_path)
 
@@ -80,13 +70,7 @@ def main(args: argparse.Namespace):
 
     val_dataloader = DataLoader(val_dataset, batch_size=None, num_workers=0)
 
-    if finetune:
-        map_location = 'cuda' if args.cuda_device == 0 else 'cpu'
-        model = BartModel.load_from_checkpoint(args.ckpt, strict=False, map_location=map_location)
-
-
-    else:
-        model = BartModel(configuration_path, **{'dropout': configuration['model']['dropout'],
+    model = BartModel(configuration_path, **{'dropout': configuration['model']['dropout'],
                                              'encoder_layerdropout': configuration['model']['encoder_layerdropout'],
                                              'decoder_layerdropout': configuration['model']['decoder_layerdropout']})
 
@@ -134,14 +118,19 @@ def main(args: argparse.Namespace):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config_path', type=str, help='Configuration file in YAML')
+    parser.add_argument('--config_path', type=str, help='path to the yaml configuration file.')
     parser.add_argument('--cuda_device', type=int, default=0)
-    parser.add_argument('--ckpt', type=str, required=False, default='')
 
-    parser.add_argument('--dropout', type=float, default=0)
-    parser.add_argument('--encoder_layerdropout', type=float, default=0)
-    parser.add_argument('--decoder_layerdropout', type=float, default=0)
-    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--dropout', type=float, default=0,
+                        help='dropout value, if given will overwrite that defined in the config file')
+
+    parser.add_argument('--encoder_layerdropout', type=float, default=0,
+                        help='encoder layer dropout value, if given will overwrite that defined in the config file')
+
+    parser.add_argument('--decoder_layerdropout', type=float, default=0,
+                        help='decoder layer dropout value, if given will overwrite that defined in the config file')
+
+    parser.add_argument('--seed', type=int, default=0, help='seed for reproducibility')
 
     return parser.parse_args()
 

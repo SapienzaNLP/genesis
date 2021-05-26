@@ -401,8 +401,7 @@ def get_generated_substitutes(input_path: str,
 
             clean_substitutes, all_substitutes = get_clean_substitutes_from_batch(sentences[4:], instance,
                                                                                   output_vocabulary=output_vocabulary,
-                                                                                  root_vocab_path=root_vocab_path
-                                                                                  )
+                                                                                  root_vocab_path=root_vocab_path)
 
         else:
             clean_substitutes, all_substitutes = get_clean_substitutes_from_batch(sentences[4:], instance)
@@ -434,23 +433,25 @@ def eval_on_task(config: Dict, best_path: str, oot_path: str, dataset_name: str)
 
 
 def parse_args() -> argparse.Namespace:
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config_path', required=True)
-    parser.add_argument('--suffix', required=True)
-    parser.add_argument('--cvp', required=True)
 
-    parser.add_argument('--beams', type=int, default=15)
-    parser.add_argument('--sequences', type=int, default=3)
+    parser.add_argument('--config_path', required=True, help='path to the yaml config file')
+    parser.add_argument('--suffix', required=True, help='name to be used as suffix for saving output files')
+    parser.add_argument('--cvp', required=True, help='path to the output vocabulary. '
+                                                     'If "", the vocabulary won\'t be cut')
 
-    parser.add_argument('--embedder', default="bert-large-cased")
+    parser.add_argument('--baseline', default=False, action="store_true", help='flag. If set, will compute the vocabulary baseline')
+    parser.add_argument('--backoff', default=False, action="store_true", help='flag. If set, will use the fallback strategy')
+    parser.add_argument('--cut_vocab', default=False, action="store_true", help='flag. If set, will cut over the output vocabulary specified with --cvp')
+    parser.add_argument('--test', default=False, action="store_true", help='flag. If set, will evaluate on the test dataset instead of the dev one.')
+
+    parser.add_argument('--seed', default=0, type=int, help='seed for reproducibility')
+    parser.add_argument('--beams', type=int, default=15, help='beam size for beam search during evaluation.')
+    parser.add_argument('--sequences', type=int, default=3, help='number of top k sequences generated with beam search to consider during evaluation.')
     parser.add_argument('--cuda_device', type=int, default=0)
-    parser.add_argument('--baseline', default=False, action="store_true")
-    parser.add_argument('--backoff', default=False, action="store_true")
-    parser.add_argument('--cut_vocab', default=False, action="store_true")
-    parser.add_argument('--seed', default=0, type=int)
-
-    parser.add_argument('--finetune', default=False, action="store_true")
-    parser.add_argument('--test', default=False, action="store_true")
+    parser.add_argument('--threshold', type=float, default=0, help='threshold for cosine similarity between candidate substitute and target word')
+    parser.add_argument('--embedder', default="bert-large-cased", help='embedder used to compute contextualised representations.')
 
     return parser.parse_args()
 
@@ -479,7 +480,7 @@ def main(args: argparse.Namespace):
 
     out_name = define_generation_out_folder(config)
 
-    exp_name = define_exp_name(config, finetune=args.finetune)
+    exp_name = define_exp_name(config)
 
     input_folder = os.path.join(config['paths']['output_folder'], exp_name, out_name)
     output_folder = os.path.join(input_folder, 'output_files')
@@ -512,7 +513,8 @@ def main(args: argparse.Namespace):
                                           suffix=args.suffix,
                                           baseline=args.baseline,
                                           backoff=args.backoff,
-                                          cut_vocab=args.cut_vocab)
+                                          cut_vocab=args.cut_vocab,
+                                          threshold=args.threshold)
 
     eval_on_task(config, best_path, oot_path, dataset_name)
 

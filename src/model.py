@@ -7,7 +7,6 @@ import torch
 import transformers
 import wandb
 import yaml
-from nltk.corpus import wordnet as wn
 
 from src.metrics import PrecisionAtOne
 from src.optimizers import RAdam

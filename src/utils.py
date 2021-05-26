@@ -279,15 +279,11 @@ def yield_batch(input_path: str, separator: str):
         yield lines
 
 
-def define_exp_name(config: Dict[str, Any], finetune: bool) -> str:
+def define_exp_name(config: Dict[str, Any]) -> str:
     exp_name = config['exp_name']
     exp_name = f'{exp_name}_{config["model"]["seed"]}'
 
-    if not finetune:
-        exp_name = f'{exp_name}_pt_{config["datasets"]["pretrain"]}'
-    else:
-        exp_name = f'{exp_name}_pt_{config["datasets"]["pretrain"]}_ft_{config["datasets"]["finetune"]}'
-
+    exp_name = f'{exp_name}_pt_{config["datasets"]["pretrain"]}'
 
     if 'dropout' in config['model'] and config['model']['dropout'] != 0:
         exp_name = f'{exp_name}_drop_{config["model"]["dropout"]}'
