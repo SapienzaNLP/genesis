@@ -1,0 +1,69 @@
+paths:
+  output_folder:
+    /media/ssd1/caterina/genesis-multilingual/checkpoints # path to the output folder where the checkpoints will be saved during training. If the path does not exists, the folder will be created.
+
+  data_dir:
+    data/translation/ # path to the data directory.
+
+  scorer_dir:
+    scoring_scripts/evalita/ # path to the scoring scripts directory.
+
+exp_name:
+  mbart # name of the experiment, will be used as prefix for the checkpoint folder. If it contains 'debug', logs won't be saved.
+
+datasets:
+  pretrain: semcor_0.7.it.clean  # name of the dataset used for pre-training. It has to be the same name of a file in the data/ folder, with format {pretrain_name}_train.tsv
+  dev: semcor_0.7.it.clean # dev set name. It has to correspond to a dataset in data/ with the name {dev_name}_dev.tsv
+  test: evalita # test set name. It has to correspond to a dataset in data/{test_name}/{test_name}_test.tsv
+
+model:
+  name: facebook/mbart-large-50 # name for HuggingFace method .from_pretrained()
+  max_tokens_per_batch: 1600
+  seed: 313
+  src_lang: it_IT
+  tgt_lang: it_IT
+
+optimiser:
+  learning_rate: 0.00001
+  weight_decay: 0.01
+  no_decay_params:
+    - "bias"
+    - "LayerNorm.weight"
+
+generation_parameters:
+  num_beams: 15 # beam size --> at training time, they will be only used to define a folder where the checkpoints will be saved (see README.md)
+  num_return_sequences: 3 # returned sequences from beam search
+  early_stopping: True # early stopping in generation
+
+wandb:
+  project_name: genesis-ext
+
+trainer:
+
+  checkpoint:
+    filename: '{epoch}-{val_prec:.2f}-{val_accuracy:.3f}' # format for the checkpoint file name
+    save_top_k: 1 # save best performing epoch on dev set (according to accuracy)
+    save_last: False
+    monitor: val_accuracy
+    mode: max
+
+  patience: 2
+  max_epochs: 100
+  use_amp: True
+
+  gradient:
+    accumulation: 2
+    clipping: 5.0
+
+shorten_gen_keys: # mapping from generation parameters that are passed to the .generate() method and strings used to create the output folder
+    num_beams: beams
+    num_return_sequences: return
+    early_stopping: None
+    length_penalty: len_penalty
+    min_length: min_len
+    do_sample: sample
+    top_k: top_k
+    temperature: temp
+    no_repeat_ngram_size: no_rep
+
+
