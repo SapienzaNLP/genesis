@@ -1,6 +1,14 @@
 # GeneSis: A Generative Approach to Substitutes in Context
 
-This repository contains the instructions to reproduce the experiments in the GeneSis paper.
+This repository contains the instructions to reproduce the experiments in the GeneSis paper, accepted at EMNLP 2021.
+When using our work, please cite it with this BibTex:
+```@inproceedings{lacerraetal:2021,
+  title={ Gene{S}is: {A} {G}enerative {A}pproach to {S}ubstitutes in {C}ontext,
+  author={Lacerra, Caterina and Tripodi, Rocco and Navigli, Roberto},
+  booktitle={Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing},
+  publisher={Association for Computational Linguistics},
+  year={2021},
+}```
 
 ## 1. :gear: Setup a new environment 
 
@@ -81,7 +89,7 @@ sequence 2                                   ...
 sequence returned_sequences                  # ex: remainder, remainder of the work, the rest of it, the balance, extra
 ```
 This file is used to clean the output and postprocess it before feeding it to the scorer, called by ```test.py```. 
-Thus, if you have already computed this file we can directly evalute the trained model (for example, trying with or without the output vocabulary) without testing it again, as described in the next section.
+Thus, if you have already computed this file you can directly evalute the trained model (for example, trying with or without the output vocabulary) without testing it again, as described in the next section.
 Two other output files are ```{test_dataset}_cut_per_target_{suffix}_best.txt``` and ```{test_dataset}_cut_per_target_{suffix}_oot.txt```, that format the output as required from the Perl scorer for the task evaluation, and finally ```{test_dataset}_cut_per_target_hr_{suffix}_output.txt``` that contains a more readable version of the model output, formatted as follows:
 
 ```bash
@@ -91,7 +99,7 @@ gold_substitutes                             # ex: #gold: remainder balance
 collected_generations                        # ex: #generated: remainder, balance, extra, other, the, all
 clean_output                                 # ex: #clean: remainder: 0.88, balance: 0.75, rest: 1.0, whole_rest: 0.83, remnant: 0.79 ...
 ```
-The ```clean_output``` row contains the output of the model after the vocab cut (if ```--cut_vocab``` is specified) and with fallback strategy (if ```--backoff```). The floats are the cosine similarities between target and substitute.
+The ```clean_output``` row contains the output of the model after the vocab cut (if ```--cut_vocab``` is specified) and with fallback strategy (if ```--backoff```). The score are the cosine similarities between target and substitute.
 
 ## 6. :microscope: Task Evaluation
 
