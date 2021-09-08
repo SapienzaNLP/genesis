@@ -69,7 +69,7 @@ There are several parameters that can be defined:
 ## 5. :clipboard: Output Files
 
 The test script will produce several output files in the ```output/ bart_{seed}_pt_{training_dataset}_drop_{dropout}_enc_lyd_{encoder_layerdropout}_dec_lyd_{decoder_layerdropout}/beams_{beam_size}_return_{return_sequences}/output_files/``` folder. 
-The most important one is named ```output_{suffix}_{test_dataset_name}.txt``` and contains the raw (without cut on the datest, without backoff strategy), formatted, for each instance, as follows:
+The most important one is named ```output_{suffix}_{test_dataset_name}.txt``` and contains the raw generated output (without cut on the datest, without backoff strategy). It is formatted, for each instance, as follows:
 
 ```bash
 target_word.POS instance_id [target_indexes] # ex: rest.NOUN 1922 [1]
