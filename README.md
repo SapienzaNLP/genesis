@@ -2,13 +2,16 @@
 
 This repository contains the instructions to reproduce the experiments in the GeneSis paper, accepted at EMNLP 2021.
 When using our work, please cite it with this BibTex:
-```@inproceedings{lacerraetal:2021,
+
+```
+@inproceedings{lacerraetal:2021,
   title={ Gene{S}is: {A} {G}enerative {A}pproach to {S}ubstitutes in {C}ontext,
   author={Lacerra, Caterina and Tripodi, Rocco and Navigli, Roberto},
   booktitle={Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing},
   publisher={Association for Computational Linguistics},
   year={2021},
-}```
+ }
+ ```
 
 ## 1. :gear: Setup a new environment 
 
