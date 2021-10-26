@@ -1,18 +1,6 @@
 # GeneSis: A Generative Approach to Substitutes in Context
 
-This repository contains the instructions to reproduce the experiments in the GeneSis paper, accepted at EMNLP 2021.
-When using our work, please cite it with this BibTex:
-
-```
-@inproceedings{lacerraetal:2021,
-  title={ Gene{S}is: {A} {G}enerative {A}pproach to {S}ubstitutes in {C}ontext},
-  author={Lacerra, Caterina and Tripodi, Rocco and Navigli, Roberto},
-  booktitle={Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing},
-  publisher={Association for Computational Linguistics},
-  year={2021},
-  address={Punta Cana, Domenican Republic}
- }
- ```
+This repository contains the instructions to reproduce the experiments in the GeneSis paper.
 
 ## 1. :gear: Setup a new environment 
 
@@ -29,7 +17,7 @@ c) Install the requirements with
 
 ## 2. :shopping_cart: Download additional data and checkpoints
 
-If you want to experiment with the datasets generated from SemCor, download the [generated_datasets.tar.gz](https://tinyurl.com/ym7mebv9) and put the files under the ```data/``` directory. 
+If you want to experiment with the datasets generated from SemCor, download the [generated_datasets.tar.gz](https://drive.google.com/file/d/13UXarVP0fGs97COBOdMwhz-0zDARKqBv/view?usp=sharing) and put the files under the ```data/``` directory.
 Note that the name of each file has the following format: ```semcor_{similarity_threshold}_{split_size}_train.tsv```. The dataset without ```{split_size}``` is the whole dataset.
 If you want to test one of the models described in the paper, download the [checkpoints](https://tinyurl.com/jnc6rk44) and move the external folder under the ```output/``` directory.
 The structure of each output subfolder is the following:
@@ -81,7 +69,7 @@ There are several parameters that can be defined:
 ## 5. :clipboard: Output Files
 
 The test script will produce several output files in the ```output/ bart_{seed}_pt_{training_dataset}_drop_{dropout}_enc_lyd_{encoder_layerdropout}_dec_lyd_{decoder_layerdropout}/beams_{beam_size}_return_{return_sequences}/output_files/``` folder. 
-The most important one is named ```output_{suffix}_{test_dataset_name}.txt``` and contains the raw generated output (without cut on the datest, without backoff strategy). It is formatted, for each instance, as follows:
+The most important one is named ```output_{suffix}_{test_dataset_name}.txt``` and contains the raw (without cut on the datest, without backoff strategy), formatted, for each instance, as follows:
 
 ```bash
 target_word.POS instance_id [target_indexes] # ex: rest.NOUN 1922 [1]
@@ -93,7 +81,7 @@ sequence 2                                   ...
 sequence returned_sequences                  # ex: remainder, remainder of the work, the rest of it, the balance, extra
 ```
 This file is used to clean the output and postprocess it before feeding it to the scorer, called by ```test.py```. 
-Thus, if you have already computed this file you can directly evalute the trained model (for example, trying with or without the output vocabulary) without testing it again, as described in the next section.
+Thus, if you have already computed this file we can directly evalute the trained model (for example, trying with or without the output vocabulary) without testing it again, as described in the next section.
 Two other output files are ```{test_dataset}_cut_per_target_{suffix}_best.txt``` and ```{test_dataset}_cut_per_target_{suffix}_oot.txt```, that format the output as required from the Perl scorer for the task evaluation, and finally ```{test_dataset}_cut_per_target_hr_{suffix}_output.txt``` that contains a more readable version of the model output, formatted as follows:
 
 ```bash
@@ -103,7 +91,7 @@ gold_substitutes                             # ex: #gold: remainder balance
 collected_generations                        # ex: #generated: remainder, balance, extra, other, the, all
 clean_output                                 # ex: #clean: remainder: 0.88, balance: 0.75, rest: 1.0, whole_rest: 0.83, remnant: 0.79 ...
 ```
-The ```clean_output``` row contains the output of the model after the vocab cut (if ```--cut_vocab``` is specified) and with fallback strategy (if ```--backoff```). The score are the cosine similarities between target and substitute.
+The ```clean_output``` row contains the output of the model after the vocab cut (if ```--cut_vocab``` is specified) and with fallback strategy (if ```--backoff```). The floats are the cosine similarities between target and substitute.
 
 ## 6. :microscope: Task Evaluation
 
@@ -119,3 +107,14 @@ b) The generated file is the input required by ```generate_dataset.py```, to be 
 c) ```dataset_cleaning.py``` cleans out the generated dataset. The ```--threshold``` parameter is the threshold on cosine similarity between target and substitutes.
 
 d) Finally, ```semcor_splits.py``` produces a split of the clean dataset. The parameters are commented in the code.
+
+
+# Acknowledgments
+
+The authors gratefully acknowledge the support of the ERC Consolidator Grant MOUSSE No. 726487 under the European Union’s Horizon 2020 research and innovation programme.
+
+This work was supported in part by the MIUR under grant “Dipartimenti di eccellenza 2018-2022” of the Department of Computer Science of the Sapienza University of Rome.
+
+# License
+
+This work is under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
