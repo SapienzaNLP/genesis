@@ -1,6 +1,6 @@
 # GeneSis: A Generative Approach to Substitutes in Context
 
-This repository contains the instructions to reproduce the experiments in the GeneSis [paper](https://www.researchgate.net/publication/355646366_GeneSis_A_Generative_Approach_to_Substitutes_in_Context), accepted at EMNLP 2021.
+This repository contains the instructions to reproduce the experiments in the [GeneSis paper](https://www.researchgate.net/publication/355646366_GeneSis_A_Generative_Approach_to_Substitutes_in_Context), accepted at EMNLP 2021.
 When using this work, please cite it as follows:
 
 ```
@@ -29,9 +29,9 @@ c) Install the requirements with
 
 ## 2. :shopping_cart: Download additional data and checkpoints
 
-If you want to experiment with the datasets generated from SemCor, download the [generated_datasets.tar.gz](https://drive.google.com/uc?export=download&id=1keUU1zjriXCi3nZmIsePNx02i-Bt87dX) and put the files under the ```data/``` directory.
+If you want to experiment with the datasets generated from SemCor, download the [generated datasets](https://drive.google.com/uc?export=download&id=1keUU1zjriXCi3nZmIsePNx02i-Bt87dX) and put the files under the ```data/``` directory.
 Note that the name of each file has the following format: ```semcor_{similarity_threshold}_{split_size}_train.tsv```. The dataset without ```{split_size}``` is the whole dataset.
-If you want to test one of the models described in the paper, download the [checkpoints](https://drive.google.com/uc?export=download&id=12G--HAMSPadoxj_K8nD_GZ8oXaUs85o-) and move the external folder under the ```output/``` directory.
+If you want to test one of the models described in the paper, download the [checkpoint](https://drive.google.com/uc?export=download&id=12G--HAMSPadoxj_K8nD_GZ8oXaUs85o-) and move the external folder under the ```output/``` directory.
 The structure of each output subfolder is the following:
 ``` 
 |--- bart_{seed}_pt_{training_dataset}_drop_{dropout}_enc_lyd_{encoder_layerdropout}_dec_lyd_{decoder_layerdropout} \
