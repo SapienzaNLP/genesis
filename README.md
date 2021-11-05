@@ -1,6 +1,6 @@
 # GeneSis: A Generative Approach to Substitutes in Context
 
-This repository contains the instructions to reproduce the experiments in the [GeneSis paper](https://www.researchgate.net/publication/355646366_GeneSis_A_Generative_Approach_to_Substitutes_in_Context), accepted at EMNLP 2021.
+This repository contains the instructions to reproduce the experiments in the [GeneSis paper](https://aclanthology.org/2021.emnlp-main.844.pdf), accepted at EMNLP 2021.
 When using this work, please cite it as follows:
 
 ```
