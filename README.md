@@ -123,7 +123,7 @@ d) Finally, ```semcor_splits.py``` produces a split of the clean dataset. The pa
 
 # Acknowledgments
 
-The authors gratefully acknowledge the support of the ERC Consolidator Grant MOUSSE No. 726487 under the European Union’s Horizon 2020 research and innovation programme.
+The authors gratefully acknowledge the support of the ERC Consolidator Grant [MOUSSE](http://mousse-project.org/) No. 726487 under the European Union’s Horizon 2020 research and innovation programme.
 
 This work was supported in part by the MIUR under grant “Dipartimenti di eccellenza 2018-2022” of the Department of Computer Science of the Sapienza University of Rome.
 
