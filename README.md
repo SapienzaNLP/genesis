@@ -10,7 +10,7 @@ When using this work, please cite it as follows:
   booktitle={Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing},
   publisher={Association for Computational Linguistics},
   year={2021},
-  address={Punta Cana, Domenican Republic}
+  address={Punta Cana, Dominican Republic}
  }
 ```
 
