@@ -3,6 +3,7 @@ import os
 from typing import Dict, List, Tuple, Optional
 
 import pytorch_lightning as pl
+import torchmetrics
 import torch
 import transformers
 import wandb
@@ -54,8 +55,8 @@ class BartModel(pl.LightningModule):
         self.optimiser_dict = self.config["optimiser"]
 
         # metrics
-        self.accuracy_train = pl.metrics.Accuracy()
-        self.accuracy_dev = pl.metrics.Accuracy()
+        self.accuracy_train = torchmetrics.Accuracy()
+        self.accuracy_dev = torchmetrics.Accuracy()
         self.val_prec = PrecisionAtOne()
 
         # generation

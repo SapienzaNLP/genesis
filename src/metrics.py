@@ -1,7 +1,7 @@
 from typing import List
 
 import torch
-from pytorch_lightning.metrics import Metric
+from torchmetrics import Metric
 
 
 class PrecisionAtOne(Metric):
