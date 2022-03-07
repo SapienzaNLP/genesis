@@ -175,8 +175,8 @@ sub scorebest {
   $recall = myround($recall,$dp);
   print "Total = $totitems, attempted = $itemsattempted\n";
   print "precision = $precision, recall = $recall\n";
-  $score = f1_score($precision, $recall)
-  print "Best = $score\n"
+  $score = f1_score($precision, $recall);
+  print "Best = $score\n";
   $precision = $besteqmode / $totmodatt; # where there was a mode and
                          # system had an answer
   $precision = myround($precision,$dp);
@@ -184,8 +184,8 @@ sub scorebest {
   $recall = myround($recall,$dp);
   print "Total with mode $totmodes attempted $totmodatt\n";
   print "Mode precision = $precision, Mode recall = $recall\n";
-  $score = f1_score($precision, $recall)
-  print "Best-mode = $score\n"
+  $score = f1_score($precision, $recall);
+  print "Best-mode = $score\n";
   close(SYS);
 }
 
@@ -271,8 +271,8 @@ sub scoreOOT {
   $recall = myround($recall,$dp);
   print "Total = $totitems, attempted = $itemsattempted\n";
   print "precision = $precision, recall = $recall\n";
-  $score = f1_score($precision, $recall)
-  print "OOT = $score\n"
+  $score = f1_score($precision, $recall);
+  print "OOT = $score\n";
   $precision = $foundmode / $totmodatt; # where there was a mode and
                          # system had an answer
   $precision = myround($precision,$dp);
@@ -280,8 +280,8 @@ sub scoreOOT {
   $recall = myround($recall,$dp);
   print "Total with mode $totmodes attempted $totmodatt\n";
   print "precision = $precision, recall = $recall\n";
-  $score = f1_score($precision, $recall)
-  print "OOT-mode = $score\n"
+  $score = f1_score($precision, $recall);
+  print "OOT-mode = $score\n";
   close(SYS);
 }
 
