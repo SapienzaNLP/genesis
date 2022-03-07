@@ -94,7 +94,7 @@ if __name__ == '__main__':
     if args.sequences != 0:
         model.generation_parameters["num_return_sequences"] = args.sequences
 
-    trainer = pl.Trainer()
+    trainer = pl.Trainer(gpus=1)
 
     test_dictionary = trainer.test(test_dataloaders=[test_dataloader], model=model)
 
