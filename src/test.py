@@ -10,7 +10,6 @@ from src.dataset import BartDataset
 from src.model import BartModel
 from src.task_evaluation import eval_generation, eval_on_task
 from src.utils import define_generation_out_folder, get_output_dictionary
-from torchsummary import summary
 
 def parse_args():
 
@@ -19,6 +18,8 @@ def parse_args():
     parser.add_argument('--config_path', required=True, help='path to the yaml config file')
 
     parser.add_argument('--cuda_device', type=int, default=None)
+
+    parser.add_argument('--gpus', type=int, default=None, help='number of gpus to train on')
 
     parser.add_argument('--suffix', required=True, help='name to be used as suffix for saving output files')
 
@@ -80,9 +81,6 @@ if __name__ == '__main__':
     test_dataset = BartDataset(test_path, bart_name, max_tokens_per_batch)
 
     model = BartModel.load_from_checkpoint(args.ckpt, strict=False, map_location=map_location)
-    a = sum(p.numel() for p in model.parameters())
-    t = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print('all: {}, trainable: {}'.format(a, t))
 
     test_dataloader = DataLoader(test_dataset, batch_size=None, num_workers=0)
 
@@ -94,7 +92,7 @@ if __name__ == '__main__':
     if args.sequences != 0:
         model.generation_parameters["num_return_sequences"] = args.sequences
 
-    trainer = pl.Trainer(gpus=1)
+    trainer = pl.Trainer(gpus=args.gpus)
 
     test_dictionary = trainer.test(test_dataloaders=[test_dataloader], model=model)
 

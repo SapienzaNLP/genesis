@@ -7,6 +7,11 @@ from nltk.corpus import wordnet as wn
 
 from src.utils import read_from_input_file, universal_to_wn_pos
 
+def download_wordnet_and_onw():
+    nltk.download('wordnet')
+    nltk.download('omw-1.4')
+
+download_wordnet_and_onw()
 
 def get_all_related_lemmas(synset: nltk.corpus.reader.wordnet) -> Set[str]:
     related = set()

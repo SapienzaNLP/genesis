@@ -1,7 +1,6 @@
 checkpoints/
 .idea/
 __pycache__
-*/__pycache__
 bart_313_pt_semcor_0.7_74k_drop_0.1_enc_lyd_0.6_dec_lyd_0.2
 data/genesis_generated_data
 lightning_logs
