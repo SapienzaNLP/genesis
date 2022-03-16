@@ -76,6 +76,7 @@ There are several parameters that can be defined:
 --baseline # flag to compute the baseline
 --embedder # name of HuggingFace model to be used as embedder for computing contextualized representations used for ranking
 --cuda_device # GPU id. If it's not given, the model will be tested on CPU
+--gpus # number of GPUs to use. Required if --cuda_device is set to a GPU id
 ```
 
 ## 5. :clipboard: Output Files

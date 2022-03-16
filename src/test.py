@@ -11,7 +11,6 @@ from src.model import BartModel
 from src.task_evaluation import eval_generation, eval_on_task
 from src.utils import define_generation_out_folder, get_output_dictionary
 
-
 def parse_args():
 
     parser = argparse.ArgumentParser()
@@ -19,6 +18,8 @@ def parse_args():
     parser.add_argument('--config_path', required=True, help='path to the yaml config file')
 
     parser.add_argument('--cuda_device', type=int, default=None)
+
+    parser.add_argument('--gpus', type=int, default=None, help='number of gpus to train on')
 
     parser.add_argument('--suffix', required=True, help='name to be used as suffix for saving output files')
 
@@ -91,7 +92,7 @@ if __name__ == '__main__':
     if args.sequences != 0:
         model.generation_parameters["num_return_sequences"] = args.sequences
 
-    trainer = pl.Trainer()
+    trainer = pl.Trainer(gpus=args.gpus)
 
     test_dictionary = trainer.test(test_dataloaders=[test_dataloader], model=model)
 
