@@ -1,8 +1,8 @@
-transformers
-pytorch-lightning
+transformers~=4.11.3
+pytorch-lightning~=1.4.9
 wandb~=0.10.15
 nltk~=3.5
 pyyaml~=5.4.0
 tqdm~=4.56.0
-sklearn
-lemminflect
+sklearn~=0.24.2
+lemminflect~=0.2.1
