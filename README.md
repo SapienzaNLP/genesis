@@ -61,7 +61,7 @@ The checkpoints for each run will be saved in the folder
 ## 4. :test_tube: Test
 
 To test a trained model on the lexical substitution task, run
-```PYTHONPATH=$(pwd) python src/test.py --config_path config/train.yml --ckpt path_to_checkpoint --cvp vocab/wordnet_vocab --cut_vocab ```
+```PYTHONPATH=$(pwd) python src/test.py --config_path config/train.yml --ckpt path_to_checkpoint --cvp vocab/wordnet_vocab --cut_vocab  --suffix ''```
 
 There are several parameters that can be defined:
 ``` bash 
