@@ -21,7 +21,7 @@ a) Create and activate a new conda environment with
 ```conda create -n genesis python=3.8```\
 ```conda activate genesis```
 
-b) Install pythorch following the instructions at https://pytorch.org/ 
+b) Install pythorch (code tested with version 1.11.0) following the instructions at https://pytorch.org/ 
 
 c) Install the requirements with 
 
